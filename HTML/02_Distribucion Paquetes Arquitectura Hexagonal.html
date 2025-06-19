@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<style type="text/css">
+<!--
+.style1 {font-family: Arial, Helvetica, sans-serif}
+-->
+</style>
+</head>
+
+<body>	
+<h2 class="style1" data-start="1308" data-end="1342">📦 Detalle de responsabilidades</h2>
+<h3 class="style1" data-start="1344" data-end="1365">🔷 domain.model</h3>
+<ul class="style1" data-start="1366" data-end="1481">
+  <li data-start="1366" data-end="1406">
+    <p data-start="1368" data-end="1406">Entidades puras (Warehouse, Shelf)</p>
+  </li>
+  <li data-start="1407" data-end="1446">
+    <p data-start="1409" data-end="1446">Enums: ShelfType, WarehouseFamily</p>
+  </li>
+  <li data-start="1447" data-end="1481">
+    <p data-start="1449" data-end="1481">Sin anotaciones de JPA ni Spring</p>
+  </li>
+</ul>
+<h3 class="style1" data-start="1483" data-end="1509">🔷 domain.port.input</h3>
+<ul class="style1" data-start="1510" data-end="1607">
+  <li data-start="1510" data-end="1568">
+    <p data-start="1512" data-end="1568">Interfaces que definen casos de uso (WarehouseUseCase)</p>
+  </li>
+  <li data-start="1569" data-end="1607">
+    <p data-start="1571" data-end="1607">Permite desacoplar los controladores</p>
+  </li>
+</ul>
+<h3 class="style1" data-start="1609" data-end="1636">🔷 domain.port.output</h3>
+<ul class="style1" data-start="1637" data-end="1745">
+  <li data-start="1637" data-end="1680">
+    <p data-start="1639" data-end="1680">Interfaces como WarehouseRepositoryPort</p>
+  </li>
+  <li data-start="1681" data-end="1745">
+    <p data-start="1683" data-end="1745">Representan lo que el dominio necesita del exterior (DB, APIs)</p>
+  </li>
+</ul>
+<h3 class="style1" data-start="1747" data-end="1770">🔷 domain.service</h3>
+<ul class="style1" data-start="1771" data-end="1900">
+  <li data-start="1771" data-end="1862">
+    <p data-start="1773" data-end="1862">Clases como WarehouseService que implementan los casos de uso definidos en port.input</p>
+  </li>
+  <li data-start="1863" data-end="1900">
+    <p data-start="1865" data-end="1900">Solo conocen interfaces del dominio</p>
+  </li>
+</ul>
+<hr data-start="1902" data-end="1905" />
+<h3 class="style1" data-start="1907" data-end="1930">🔶 adapter.in.web</h3>
+<ul class="style1" data-start="1931" data-end="2094">
+  <li data-start="1931" data-end="1975">
+    <p data-start="1933" data-end="1975">Controladores REST (WarehouseController)</p>
+  </li>
+  <li data-start="1976" data-end="2050">
+    <p data-start="1978" data-end="2050">Solo dependen de WarehouseUseCase (nunca acceden a repos directamente)</p>
+  </li>
+  <li data-start="2051" data-end="2094">
+    <p data-start="2053" data-end="2094">Manejo de DTOs, validaciones, excepciones</p>
+  </li>
+</ul>
+<h3 class="style1" data-start="2096" data-end="2128">🔶 adapter.out.persistence</h3>
+<ul class="style1" data-start="2129" data-end="2325">
+  <li data-start="2129" data-end="2179">
+    <p data-start="2131" data-end="2179">Entidades JPA (WarehouseEntity, ShelfEntity)</p>
+  </li>
+  <li data-start="2180" data-end="2236">
+    <p data-start="2182" data-end="2236">Repositorios Spring Data (SpringWarehouseRepository)</p>
+  </li>
+  <li data-start="2237" data-end="2269">
+    <p data-start="2239" data-end="2269">Mapeadores (WarehouseMapper)</p>
+  </li>
+  <li data-start="2270" data-end="2325">
+    <p data-start="2272" data-end="2325">Adaptadores que implementan WarehouseRepositoryPort</p>
+  </li>
+</ul>
+<hr data-start="2327" data-end="2330" />
+<h3 class="style1" data-start="2332" data-end="2347">⚙️ config</h3>
+<ul class="style1" data-start="2348" data-end="2524">
+  <li data-start="2348" data-end="2404">
+    <p data-start="2350" data-end="2404">Beans manuales (para servicios sin anotaciones Spring)</p>
+  </li>
+  <li data-start="2405" data-end="2482">
+    <p data-start="2407" data-end="2482">Configuración de mappers, seguridad, profiles (application-{profile}.yml)</p>
+  </li>
+  <li data-start="2483" data-end="2524">
+    <p data-start="2485" data-end="2524">Configuración de Swagger, Jackson, etc.</p>
+  </li>
+</ul>
+<hr data-start="2526" data-end="2529" />
+<h2 class="style1" data-start="2531" data-end="2566">🎯 Ventajas de esta organización</h2>
+<div class="style1">
+  <div tabindex="-1">
+    <table data-start="2568" data-end="3381">
+      <thead data-start="2568" data-end="2684">
+        <tr data-start="2568" data-end="2684">
+          <th data-start="2568" data-end="2605" data-col-size="sm">Beneficio</th>
+          <th data-start="2605" data-end="2684" data-col-size="md">Descripción</th>
+        </tr>
+      </thead>
+      <tbody data-start="2801" data-end="3381">
+        <tr data-start="2801" data-end="2915">
+          <td data-start="2801" data-end="2837" data-col-size="sm">📦 Modularidad</td>
+          <td data-start="2837" data-end="2915" data-col-size="md">Cambios en una capa no afectan otras.</td>
+        </tr>
+        <tr data-start="2916" data-end="3030">
+          <td data-start="2916" data-end="2952" data-col-size="sm">🧪 Testabilidad</td>
+          <td data-start="2952" data-end="3030" data-col-size="md">Dominios y casos de uso se prueban sin dependencias.</td>
+        </tr>
+        <tr data-start="3031" data-end="3151">
+          <td data-start="3031" data-end="3067" data-col-size="sm">🔌 Sustituibilidad</td>
+          <td data-start="3067" data-end="3151" data-col-size="md">Puedes cambiar adaptadores sin tocar el dominio (por ej. cambiar JPA por Mongo).</td>
+        </tr>
+        <tr data-start="3152" data-end="3266">
+          <td data-start="3152" data-end="3188" data-col-size="sm">📚 Claridad</td>
+          <td data-start="3188" data-end="3266" data-col-size="md">Entrevistadores ven tus conocimientos en diseño y arquitectura.</td>
+        </tr>
+        <tr data-start="3267" data-end="3381">
+          <td data-start="3267" data-end="3303" data-col-size="sm">🚀 Mantenibilidad</td>
+          <td data-start="3303" data-end="3381" data-col-size="md">Ideal para escalar la solución y mantenerla a largo plazo.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>
