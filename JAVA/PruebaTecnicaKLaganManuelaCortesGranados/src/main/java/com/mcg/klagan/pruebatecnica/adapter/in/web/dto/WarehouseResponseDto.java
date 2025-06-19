@@ -122,7 +122,7 @@ public class WarehouseResponseDto {
         return shelves;
     }
 
-    public void setShelves(List<ShelfDto> shelves) {
+    public void setShelves(List<ShelfResponseDto> shelves) {
         this.shelves = shelves;
     }
 

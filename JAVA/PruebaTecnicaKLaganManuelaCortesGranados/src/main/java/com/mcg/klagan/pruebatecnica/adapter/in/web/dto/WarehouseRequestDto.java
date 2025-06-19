@@ -1,96 +1,89 @@
 package com.mcg.klagan.pruebatecnica.adapter.in.web.dto;
 
 import com.mcg.klagan.pruebatecnica.domain.model.WarehouseFamily;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 
 import java.util.List;
 
 /**
- * WarehouseRequestDto is a Data Transfer Object (DTO) that encapsulates incoming data
- * required to create or update a warehouse.
+ * WarehouseRequestDto is a Data Transfer Object (DTO) that encapsulates input data required
+ * to create or update a warehouse via HTTP requests.
  *
- * 📦 Layer: Adapter → Inbound → Web (DTO)
- * 🧱 Hexagonal Architecture Role:
- *      - Acts as an input adapter that receives data from external systems (HTTP requests).
- *      - Serves as a translation boundary between the web layer and the domain layer.
- *      - Helps isolate external protocols (JSON + HTTP + validation) from domain models.
+ * 🧱 Hexagonal Architecture (Ports & Adapters):
+ * - Part of the **Inbound Adapter** layer (Web interface).
+ * - Converts external input (e.g. HTTP/JSON payloads) into internal representations.
+ * - Decouples the domain and use cases from transport protocols and UI concerns.
  *
- * 🧼 Clean Architecture Alignment:
- *      - Part of the outer layer (interface adapters).
- *      - It does not contain domain logic.
- *      - It is used by controllers to accept and validate input before invoking use cases.
+ * 🧼 Clean Architecture:
+ * - Located in the **Interface Adapters** layer.
+ * - Responsible for mediating between external models (UI/HTTP) and internal models (domain).
+ * - Prevents leaking web-specific constructs (like annotations) into the domain layer.
  *
- * 📐 Domain-Driven Design:
- *      - Does not belong to the domain model itself.
- *      - Is mapped to domain entities via a mapper (e.g., `WarehouseMapper`).
- *      - Uses the `WarehouseFamily` enum from the domain, preserving business semantics.
+ * 🧠 Domain-Driven Design (DDD):
+ * - This class is a **DTO**, which serves to map user input into the **domain model** (`Warehouse`, `Shelf`).
+ * - `WarehouseFamily` is a **domain-level enumeration**, representing a core **concept** of the business.
+ * - This class is not part of the domain itself but serves to feed data to it cleanly.
  *
- * 📐 SOLID Principles Applied:
- * ------------------------------------------------------------------------------
+ * ✅ SOLID Principles:
+ * ----------------------------------------------------------
  * ✅ SRP (Single Responsibility Principle):
- *      - Has only one responsibility: receive and validate input data for warehouse operations.
+ *   - Responsible only for data transport and validation of warehouse input.
  *
  * ✅ OCP (Open/Closed Principle):
- *      - New fields or validations can be added without modifying other parts of the application.
+ *   - Can be extended with new fields (e.g., warehouse zone) without modifying domain logic.
  *
  * ✅ LSP (Liskov Substitution Principle):
- *      - Instances of this DTO can be passed around in place of any superclass or interface (if present) without breaking behavior.
+ *   - Can be substituted anywhere a DTO of the same structure is expected.
  *
- * ❌ ISP (Interface Segregation Principle): Not directly applicable to POJOs/DTOs.
+ * ✅ ISP (Interface Segregation Principle):
+ *   - Encapsulates only necessary fields to create a warehouse, without overburdening clients.
  *
- * ❌ DIP (Dependency Inversion Principle): Not applicable, but this class depends only on stable domain elements (e.g., `WarehouseFamily`).
+ * 🔍 Input Validation:
+ * - Ensures integrity and early validation via `javax.validation` annotations.
+ * - Protects downstream layers from invalid or incomplete data.
  *
- * ✅ Validation Layer:
- *      - Uses Jakarta Bean Validation to ensure correctness before domain transformation.
- *      - Prevents invalid states from leaking into domain logic.
- *
- * 🔐 Example Use Case:
- *      - Used in `WarehouseController.createWarehouse(...)` to receive a JSON payload.
- *      - Mapped via `WarehouseMapper` to the domain model `Warehouse`.
- *
- * 🧪 Validations:
- *      - `@NotBlank`, `@NotNull`, `@Min`, and `@Pattern` ensure business invariants at the boundary.
- *
- * Author: Manuela Cortés Granados
- * Since: 19 Junio 2025 4:02 AM GMT -5 Bogota DC Colombia
+ * 📦 Layer: Adapter → Inbound → Web (DTO)
+ * 👤 Author: Manuela Cortés Granados
+ * 📅 Since: June 19, 2025 5:36 AM GMT -5 Bogota DC Colombia
  */
 public class WarehouseRequestDto {
 
     /**
-     * Name of the client who owns the warehouse.
-     * Cannot be blank.
+     * Name of the client that owns the warehouse.
      */
     @NotBlank(message = "El cliente no puede estar vacío")
     private String client;
 
     /**
-     * Installation or site identifier.
-     * Cannot be blank.
+     * Installation site where the warehouse is located.
      */
     @NotBlank(message = "La instalación no puede estar vacía")
     private String installation;
 
     /**
-     * Family classification of the warehouse (e.g., EST or ROB).
-     * Cannot be null. Maps to domain enum `WarehouseFamily`.
+     * Warehouse family type (e.g., EST or ROB).
+     * This is a strong domain concept.
      */
     @NotNull(message = "La familia es obligatoria")
     private WarehouseFamily family;
 
     /**
      * Maximum number of shelves allowed in the warehouse.
-     * Must be at least 1.
      */
     @Min(value = 1, message = "El número máximo de estanterías debe ser al menos 1")
     private int maxShelves;
 
     /**
-     * List of shelf types requested to be installed.
-     * Each must be one of: A, B, C, or D (validated via regex).
+     * List of shelf types to be installed in the warehouse.
+     * Each shelf is validated individually using ShelfRequestDto.
      */
-    private List<@Pattern(regexp = "A|B|C|D", message = "Tipo de estantería inválido") String> shelfTypes;
+    @Valid
+    @NotNull(message = "La lista de estanterías no puede ser nula")
+    @Size(max = 100, message = "No se permiten más de 100 estanterías")
+    private List<ShelfRequestDto> shelves;
 
-    // --- Getters y Setters ---
+    // --- Getters and Setters ---
 
     public String getClient() {
         return client;
@@ -124,11 +117,11 @@ public class WarehouseRequestDto {
         this.maxShelves = maxShelves;
     }
 
-    public List<String> getShelfTypes() {
-        return shelfTypes;
+    public List<ShelfRequestDto> getShelves() {
+        return shelves;
     }
 
-    public void setShelfTypes(List<String> shelfTypes) {
-        this.shelfTypes = shelfTypes;
+    public void setShelves(List<ShelfRequestDto> shelves) {
+        this.shelves = shelves;
     }
 }
