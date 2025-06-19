@@ -78,4 +78,12 @@ public interface WarehouseUseCase {
      * @param id the warehouse ID to delete
      */
     void deleteWarehouse(Long id);
+
+    /**
+     * Updates an existing warehouse by ID with new data.
+     * @param id the ID of the warehouse to update
+     * @param updated the new warehouse data
+     * @return the updated warehouse
+     */
+    Warehouse updateWarehouse(Long id, Warehouse updated);
 }
