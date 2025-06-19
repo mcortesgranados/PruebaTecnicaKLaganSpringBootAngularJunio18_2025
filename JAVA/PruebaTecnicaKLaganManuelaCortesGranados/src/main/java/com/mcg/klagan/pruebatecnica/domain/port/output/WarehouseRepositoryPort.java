@@ -2,6 +2,7 @@ package com.mcg.klagan.pruebatecnica.domain.port.output;
 
 import com.mcg.klagan.pruebatecnica.domain.model.Warehouse;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -49,7 +50,7 @@ import java.util.Optional;
  *   warehouseService.findWarehouseById(id) → calls WarehouseRepositoryPort.findById(id)
  *
  * Author: Manuela Cortés Granados
- * Since: 19 Junio 2025
+ * Since: 19 Junio 2025 4:21 AM -5 GMT Bogota DC Colombia
  */
 public interface WarehouseRepositoryPort {
 
@@ -66,4 +67,10 @@ public interface WarehouseRepositoryPort {
      * @return the saved warehouse
      */
     Warehouse save(Warehouse warehouse);
+
+    List<Warehouse> findAll();
+
+    void deleteById(Long id);
+
+    boolean existsById(Long id);
 }
