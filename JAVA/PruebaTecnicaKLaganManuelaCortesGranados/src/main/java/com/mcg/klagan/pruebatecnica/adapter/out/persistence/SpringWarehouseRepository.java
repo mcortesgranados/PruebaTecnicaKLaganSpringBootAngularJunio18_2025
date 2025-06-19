@@ -46,7 +46,7 @@ import org.springframework.stereotype.Repository;
  *   - Called from an adapter class like `WarehousePersistenceAdapter` that implements an output port.
  *
  * Author: Manuela Cortés Granados
- * Since: 19 Junio 2025
+ * Since: 19 Junio 2025 4:12 AM GMT -5 Bogota DC Colombia
  */
 @Repository
 public interface SpringWarehouseRepository extends JpaRepository<WarehouseEntity, Long> {
